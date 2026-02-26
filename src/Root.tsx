@@ -43,10 +43,10 @@ function Card(props: Props) {
 export function Root() {
   return (
     <Card
-      id={0}
-      image="https://placeholdit.com/400/dddddd/999999"
+      id={25}
+      image="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"
       name="Pikachu"
-      types={["grass"]}
+      types={["electric"]} 
     />
   );
 }
