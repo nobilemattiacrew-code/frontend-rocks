@@ -2,49 +2,55 @@
 import { Link } from "react-router";
 import { PokeAPI } from "./api";
 */
-
-interface Props {
+type Props = {
   id: number;
   image: string;
   name: string;
   types: string[];
 }
 
-export const Card: React.FC<Props> = (props) => (
-  <div className="bg-white border border-gray-300 rounded-lg shadow-md relative w-2xs flex items-center justify-center h-80">
-    <h4 className="text-xl text-gray-900 tracking-wide font-bold absolute left-4 top-2">
-      {props.name} -{" "} PROVA PROVA
-      <span className="text-gray-700 font-medium">{props.id}</span>
-    </h4>
+function Card(props: Props) {
+  return (
+    <div className="w-64 p-4 rounded-xl border bg-white shadow-sm">
+      <div className="text-sm text-gray-400 font-medium">
+        #{props.id}
+      </div>
 
-    <img
-      src={props.image}
-      alt={props.name}
-      className="w-36 h-36 object-contain"
-    />
+      <div className="text-lg font-semibold mt-1">
+        {props.name}
+      </div>
 
-    <div className="text-sm text-gray-700 absolute right-2 bottom-2">
-      <div className="flex justify-center space-x-2">
+      <img
+        src={props.image}
+        alt={props.name}
+        className="w-32 h-32 mx-auto my-3 object-contain"
+      />
+
+      <div className="flex gap-2 justify-center">
         {props.types.map((type) => (
           <span
             key={type}
-            className={`font-bold text-white px-3 py-1 rounded-md text-xs ${getTypeColor(type)}`}
+            className={`px-2 py-1 text-xs text-white rounded-md ${getTypeColor(type)}`}
           >
             {type}
           </span>
         ))}
       </div>
     </div>
-  </div>
-);
-export function Root() {
-  return <Card
-    id={0}
-    image="https://placeholdit.com/400/dddddd/999999"
-    name="Pikachu"
-    types={["grass"]}
-    />
+  );
 }
+
+export function Root() {
+  return (
+    <Card
+      id={0}
+      image="https://placeholdit.com/400/dddddd/999999"
+      name="Pikachu"
+      types={["grass"]}
+    />
+  );
+}
+
 function getTypeColor(type: string): string {
   return typeColors[type];
 }
