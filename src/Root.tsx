@@ -1,8 +1,14 @@
-/*import { useState, useEffect } from "react";
-import { Link } from "react-router";
+import { useState, useEffect } from "react";
 import { PokeAPI } from "./api";
-*/
+
 type Props = {
+  id: number;
+  image: string;
+  name: string;
+  types: string[];
+}
+
+interface PokemonCard {
   id: number;
   image: string;
   name: string;
@@ -40,14 +46,53 @@ function Card(props: Props) {
   );
 }
 
+async function fetchAllPokemons(): Promise<PokemonCard[]> {
+  const list = await PokeAPI.listPokemons(0, 151);
+  const pokemons = await Promise.all(
+    list.results.map(async (item: { name: string; url: string }) => {
+      const pokemon = await PokeAPI.getPokemonByName(item.name);
+      return {
+        id: pokemon.id,
+        image: pokemon.sprites.other?.["official-artwork"].front_default ?? "",
+        name: pokemon.name,
+        types: pokemon.types.map((type) => type.type.name),
+      };
+    }),
+  );
+
+  return pokemons;
+}
+
 export function Root() {
+  const [pokemons, setPokemons] = useState<PokemonCard[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchAllPokemons().then((data) => {
+      setPokemons(data);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    return <div className="text-center text-2xl p-8">Caricamento Pokémon...</div>;
+  }
+
   return (
-    <Card
-      id={25}
-      image="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"
-      name="Pikachu"
-      types={["electric"]} 
-    />
+    <div className="p-8">
+      <h1 className="text-3xl font-bold mb-8">Tutti i Pokémon</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {pokemons.map((pokemon) => (
+          <Card
+            key={pokemon.id}
+            id={pokemon.id}
+            image={pokemon.image}
+            name={pokemon.name}
+            types={pokemon.types}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 
