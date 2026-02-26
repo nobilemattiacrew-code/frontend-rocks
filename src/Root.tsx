@@ -13,7 +13,7 @@ interface Props {
 export const Card: React.FC<Props> = (props) => (
   <div className="bg-white border border-gray-300 rounded-lg shadow-md relative w-2xs flex items-center justify-center h-80">
     <h4 className="text-xl text-gray-900 tracking-wide font-bold absolute left-4 top-2">
-      {props.name} -{" "}
+      {props.name} -{" "} PROVA PROVA
       <span className="text-gray-700 font-medium">{props.id}</span>
     </h4>
 
